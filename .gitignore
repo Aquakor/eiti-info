@@ -1,2 +1,3 @@
 test.py
 *.jl
+__pycache__/
