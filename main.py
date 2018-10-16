@@ -42,13 +42,20 @@ def check_anns(anns, jl_path='announcement.jl', sent=True):
         else:
             # If announcement exist in the list, brake early from the for loop.
             break
+
     file.close()
 
 def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'):
     """
     Scrape announcements from site.
     """
-    r = requests.get(site)
+    try:
+        r = requests.get(site, timeout=20)
+    except requests.exceptions.ConnectTimeout as e:
+        print(e)
+    except:
+        raise Exception('Unexpected Error')
+
     html_doc = r.text
     soup = BeautifulSoup(html_doc, 'html.parser')
 
@@ -60,14 +67,23 @@ def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekan
 
 if __name__ == "__main__":
 
-    anns = download_anns()
+    try:
+        anns = download_anns()
+    except Exception as e:
+        print(e)
 
     jl_path='announcement.jl'
     if os.path.isfile(jl_path):
         # If .jl file exists append file with new announcements
         # and define them as not sent to the user.
-        check_anns(anns=anns, jl_path='announcement.jl', sent=False)
+        try:
+            check_anns(anns=anns, jl_path='announcement.jl', sent=False)
+        except OSError as e:
+            print(e)
     else:
         # If .jl file does not exist assume user already read all the announcements
         # on the webpage and define them as sent.
-        check_anns(anns=anns, jl_path='announcement.jl', sent=True)
+        try:
+            check_anns(anns=anns, jl_path='announcement.jl', sent=True)
+        except OSError as e:
+            print(e)
