@@ -49,12 +49,7 @@ def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekan
     """
     Scrape announcements from site.
     """
-    try:
-        r = requests.get(site, timeout=20)
-    except requests.exceptions.ConnectTimeout as e:
-        print(e)
-    except:
-        raise Exception('Unexpected Error')
+    r = requests.get(site, timeout=20)
 
     html_doc = r.text
     soup = BeautifulSoup(html_doc, 'html.parser')
@@ -62,15 +57,14 @@ def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekan
     anns = soup.find_all('div', {'class': 'class-blog-post'})
 
     return anns
-
-
+    
 
 if __name__ == "__main__":
 
     try:
         anns = download_anns()
-    except Exception as e:
-        print(e)
+    except:
+        print('Unexpected error')
 
     jl_path='announcement.jl'
     if os.path.isfile(jl_path):
@@ -78,12 +72,12 @@ if __name__ == "__main__":
         # and define them as not sent to the user.
         try:
             check_anns(anns=anns, jl_path='announcement.jl', sent=False)
-        except OSError as e:
-            print(e)
+        except:
+            print('Unexpected error')
     else:
         # If .jl file does not exist assume user already read all the announcements
         # on the webpage and define them as sent.
         try:
             check_anns(anns=anns, jl_path='announcement.jl', sent=True)
-        except OSError as e:
-            print(e)
+        except:
+            print('Unexpected error')
