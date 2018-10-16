@@ -22,9 +22,6 @@ def check_anns(anns, jl_path='announcement.jl', sent=True):
     text = file.read()
 
     for ann in anns:
-        # Create a dictionary to populate the file.
-        d = dict()
-
         # Retrieve the title text of the announcement.
         title = ann.a.text
 
@@ -32,6 +29,8 @@ def check_anns(anns, jl_path='announcement.jl', sent=True):
         # the title string into proper format to compare wheter
         # it is in the file.
         if json.dumps(title) not in text:
+            # Create a dictionary to populate the file.
+            d = dict()
 
             # Populate the dictionary and save it into file.
             d['title'] = title
@@ -57,7 +56,7 @@ def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekan
     anns = soup.find_all('div', {'class': 'class-blog-post'})
 
     return anns
-    
+
 
 if __name__ == "__main__":
 
