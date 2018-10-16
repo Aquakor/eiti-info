@@ -62,8 +62,12 @@ if __name__ == "__main__":
 
     anns = download_anns()
 
-    file_path = 'announcement.jl'
-    if os.path.isfile(file_path):
-        check_anns(anns=anns, jl_path=file_path, sent=False)
+    jl_path='announcement.jl'
+    if os.path.isfile(jl_path):
+        # If .jl file exists append file with new announcements
+        # and define them as not sent to the user.
+        check_anns(anns=anns, jl_path='announcement.jl', sent=False)
     else:
-        check_anns(anns=anns, jl_path=file_path, sent=True)
+        # If .jl file does not exist assume user already read all the announcements
+        # on the webpage and define them as sent.
+        check_anns(anns=anns, jl_path='announcement.jl', sent=True)
