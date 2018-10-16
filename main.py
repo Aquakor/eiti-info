@@ -44,15 +44,23 @@ def check_anns(anns, jl_path='announcement.jl', sent=True):
             break
     file.close()
 
-
-if __name__ == "__main__":
-
-    site = 'http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'
+def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'):
+    """
+    Scrape announcements from site.
+    """
     r = requests.get(site)
     html_doc = r.text
     soup = BeautifulSoup(html_doc, 'html.parser')
 
     anns = soup.find_all('div', {'class': 'class-blog-post'})
+
+    return anns
+
+
+
+if __name__ == "__main__":
+
+    anns = download_anns()
 
     file_path = 'announcement.jl'
     if os.path.isfile(file_path):
