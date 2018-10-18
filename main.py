@@ -1,8 +1,10 @@
 import os
 import json
+import time
 
 import requests
 from bs4 import BeautifulSoup
+import yagmail
 
 def check_anns(anns, jl_path='announcement.jl', sent=True):
     """
@@ -57,26 +59,51 @@ def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekan
 
     return anns
 
+def send_mail(jl_path='announcement.jl'):
+    # Open file containing scraped data.
+    file = open(jl_path, 'a+')
+    file.seek(0, 0)
+
+    # Read content of the file.
+    content = file.read().split('\n')
+
+    for line in content:
+        try:
+            line = json.loads(line)
+        except:
+            break
+        if line["sent"] == False:
+            yag = yagmail.SMTP()
+            contents = [line["content"]]
+            yag.send('...', line["title"], contents)
+            line["sent"] = True
+            print('Mail sent.')
 
 if __name__ == "__main__":
 
-    try:
-        anns = download_anns()
-    except:
-        print('Unexpected error')
+    while True:
+        try:
+            anns = download_anns()
+        except:
+            print('Unexpected error')
 
-    jl_path='announcement.jl'
-    if os.path.isfile(jl_path):
-        # If .jl file exists append file with new announcements
-        # and define them as not sent to the user.
-        try:
-            check_anns(anns=anns, jl_path='announcement.jl', sent=False)
-        except:
-            print('Unexpected error')
-    else:
-        # If .jl file does not exist assume user already read all the announcements
-        # on the webpage and define them as sent.
-        try:
-            check_anns(anns=anns, jl_path='announcement.jl', sent=True)
-        except:
-            print('Unexpected error')
+        jl_path='announcement.jl'
+        if os.path.isfile(jl_path):
+            # If .jl file exists append file with new announcements
+            # and define them as not sent to the user.
+            try:
+                check_anns(anns=anns, jl_path='announcement.jl', sent=False)
+            except:
+                print('Unexpected error')
+        else:
+            # If .jl file does not exist assume user already read all the announcements
+            # on the webpage and define them as sent.
+            try:
+                check_anns(anns=anns, jl_path='announcement.jl', sent=True)
+            except:
+                print('Unexpected error')
+
+        send_mail()
+        print('Waiting 6 hours')
+
+        time.sleep(21600)
