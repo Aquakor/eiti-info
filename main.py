@@ -1,6 +1,7 @@
 import os
 import json
 from time import sleep
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -79,6 +80,7 @@ def send_mail(jl_path='announcement.jl'):
             line["sent"] = True
             print('Mail sent.')
 
+
 if __name__ == "__main__":
 
     while True:
@@ -104,6 +106,6 @@ if __name__ == "__main__":
                 print('Unexpected error')
 
         send_mail()
-        print('Waiting 6 hours')
+        print(str(datetime.now()) + ': Waiting 6 hours')
 
         sleep(21600)
