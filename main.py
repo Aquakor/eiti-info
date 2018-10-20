@@ -1,6 +1,6 @@
 import os
 import json
-import time
+from time import sleep
 
 import requests
 from bs4 import BeautifulSoup
@@ -106,4 +106,4 @@ if __name__ == "__main__":
         send_mail()
         print('Waiting 6 hours')
 
-        time.sleep(21600)
+        sleep(21600)
