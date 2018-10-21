@@ -47,7 +47,8 @@ def check_anns(anns, jl_path='announcement.jl', sent=True):
 
     file.close()
 
-def download_anns(site='http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'):
+
+def download_anns(site):
     """
     Scrape announcements from site.
     """
@@ -83,7 +84,8 @@ def send_mail(jl_path='announcement.jl'):
 def main():
     while True:
         try:
-            anns = download_anns()
+            site = 'http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'
+            anns = download_anns(site)
         except:
             print('Unexpected error')
 
