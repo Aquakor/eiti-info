@@ -64,7 +64,7 @@ def download_anns(site):
     return anns
 
 
-def send_mail(jl_path='announcement.jl'):
+def send_mail(jl_path):
     # Open file containing scraped data.
     file = open(jl_path, 'a+')
     file.seek(0, 0)
@@ -103,7 +103,7 @@ def main():
             # on the webpage and define them as sent.
             check_anns(anns=anns, jl_path='announcement.jl', sent=True)
 
-        send_mail()
+        send_mail(jl_path)
         print(str(datetime.now()) + ': Waiting 6 hours')
 
         sleep(21600)
