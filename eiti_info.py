@@ -7,7 +7,8 @@ import requests
 from bs4 import BeautifulSoup
 import yagmail
 
-def check_anns(anns, jl_path='announcement.jl', sent=True):
+
+def check_anns(anns, jl_path, sent=True):
     """
     Attempt to check wheter scraped data contain new announcement
     and append it to the .jl file.
