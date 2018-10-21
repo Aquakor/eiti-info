@@ -92,17 +92,11 @@ def main():
         if os.path.isfile(jl_path):
             # If .jl file exists append file with new announcements
             # and define them as not sent to the user.
-            try:
-                check_anns(anns=anns, jl_path='announcement.jl', sent=False)
-            except:
-                print('Unexpected error')
+            check_anns(anns=anns, jl_path='announcement.jl', sent=False)
         else:
             # If .jl file does not exist assume user already read all the announcements
             # on the webpage and define them as sent.
-            try:
-                check_anns(anns=anns, jl_path='announcement.jl', sent=True)
-            except:
-                print('Unexpected error')
+            check_anns(anns=anns, jl_path='announcement.jl', sent=True)
 
         send_mail()
         print(str(datetime.now()) + ': Waiting 6 hours')
