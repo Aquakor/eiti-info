@@ -20,6 +20,7 @@ def check_anns(anns, jl_path, sent=True):
     """
     # Open file containing scraped data.
     file = open(jl_path, 'a+')
+
     file.seek(0, 0)
 
     # Read content of the file.
@@ -62,6 +63,7 @@ def download_anns(site):
 
     return anns
 
+
 def send_mail(jl_path='announcement.jl'):
     # Open file containing scraped data.
     file = open(jl_path, 'a+')
@@ -74,7 +76,8 @@ def send_mail(jl_path='announcement.jl'):
         try:
             line = json.loads(line)
         except json.decoder.JSONDecodeError:
-            # Except error on the last iteration, because the file contain blank line at the end.
+            # Except error on the last iteration,
+            # because the file contain blank line at the end.
             break
         if line["sent"] is False:
             yag = yagmail.SMTP()
@@ -83,18 +86,20 @@ def send_mail(jl_path='announcement.jl'):
             line["sent"] = True
             print('Mail sent.')
 
+
 def main():
     while True:
         site = 'http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'
         anns = download_anns(site)
 
-        jl_path='announcement.jl'
+        jl_path = 'announcement.jl'
         if os.path.isfile(jl_path):
             # If .jl file exists append file with new announcements
             # and define them as not sent to the user.
             check_anns(anns=anns, jl_path='announcement.jl', sent=False)
         else:
-            # If .jl file does not exist assume user already read all the announcements
+            # If .jl file does not exist assume user
+            # already read all the announcements
             # on the webpage and define them as sent.
             check_anns(anns=anns, jl_path='announcement.jl', sent=True)
 
@@ -102,7 +107,6 @@ def main():
         print(str(datetime.now()) + ': Waiting 6 hours')
 
         sleep(21600)
-
 
 
 if __name__ == "__main__":
