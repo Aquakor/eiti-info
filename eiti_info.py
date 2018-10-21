@@ -84,11 +84,8 @@ def send_mail(jl_path='announcement.jl'):
 
 def main():
     while True:
-        try:
-            site = 'http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'
-            anns = download_anns(site)
-        except:
-            print('Unexpected error')
+        site = 'http://www.elka.pw.edu.pl/Aktualnosci/Komunikaty-Dziekanatu'
+        anns = download_anns(site)
 
         jl_path='announcement.jl'
         if os.path.isfile(jl_path):
