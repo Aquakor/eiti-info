@@ -80,9 +80,7 @@ def send_mail(jl_path='announcement.jl'):
             line["sent"] = True
             print('Mail sent.')
 
-
-if __name__ == "__main__":
-
+def main():
     while True:
         try:
             anns = download_anns()
@@ -109,3 +107,8 @@ if __name__ == "__main__":
         print(str(datetime.now()) + ': Waiting 6 hours')
 
         sleep(21600)
+
+
+
+if __name__ == "__main__":
+    main()
