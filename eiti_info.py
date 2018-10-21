@@ -72,7 +72,8 @@ def send_mail(jl_path='announcement.jl'):
     for line in content:
         try:
             line = json.loads(line)
-        except:
+        except json.decoder.JSONDecodeError:
+            # Except error on the last iteration, because the file contain blank line at the end.
             break
         if line["sent"] == False:
             yag = yagmail.SMTP()
