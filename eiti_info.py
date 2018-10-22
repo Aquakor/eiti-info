@@ -4,7 +4,7 @@ from time import sleep
 from datetime import datetime
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, ResultSet
 import yagmail
 
 
@@ -18,36 +18,40 @@ def check_anns(anns, jl_path, sent=True):
         jl_path (str): Path to .jl file containing saved announcements.
         sent (bool): Wheter message was sent to the user.
     """
-    # Open file containing scraped data.
-    file = open(jl_path, 'a+')
+    if isinstance(anns, ResultSet):
+        # Open file containing scraped data.
+        file = open(jl_path, 'a+')
 
-    file.seek(0, 0)
+        file.seek(0, 0)
 
-    # Read content of the file.
-    text = file.read()
+        # Read content of the file.
+        text = file.read()
 
-    for ann in anns:
-        # Retrieve the title text of the announcement.
-        title = ann.a.text
+        for ann in anns:
+            # Retrieve the title text of the announcement.
+            title = ann.a.text
 
-        # Data saved in .jl file contain unicode so it is necessary to convert
-        # the title string into proper format to compare wheter
-        # it is in the file.
-        if json.dumps(title) not in text:
-            # Create a dictionary to populate the file.
-            d = dict()
+            # Data saved in .jl file contain unicode
+            # so it is necessary to convert the title
+            # string into proper format to compare wheter it is in the file.
+            if json.dumps(title) not in text:
+                # Create a dictionary to populate the file.
+                d = dict()
 
-            # Populate the dictionary and save it into file.
-            d['title'] = title
-            d['content'] = ann.p.text
-            d['sent'] = sent
-            new_line = json.dumps(d) + "\n"
-            file.write(new_line)
-        else:
-            # If announcement exist in the list, brake early from the for loop.
-            break
+                # Populate the dictionary and save it into file.
+                d['title'] = title
+                d['content'] = ann.p.text
+                d['sent'] = sent
+                new_line = json.dumps(d) + "\n"
+                file.write(new_line)
+            else:
+                # If announcement exist in the list,
+                #  brake early from the for loop.
+                break
 
-    file.close()
+        file.close()
+    else:
+        print("Wrong argument!")
 
 
 def download_anns(site):
