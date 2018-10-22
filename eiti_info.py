@@ -55,13 +55,15 @@ def download_anns(site):
     Scrape announcements from site.
     """
     r = requests.get(site, timeout=20)
+    if r.ok:
+        html_doc = r.text
+        soup = BeautifulSoup(html_doc, 'html.parser')
 
-    html_doc = r.text
-    soup = BeautifulSoup(html_doc, 'html.parser')
+        anns = soup.find_all('div', {'class': 'class-blog-post'})
 
-    anns = soup.find_all('div', {'class': 'class-blog-post'})
-
-    return anns
+        return anns
+    else:
+        return "Bad response"
 
 
 def send_mail(jl_path):
