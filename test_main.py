@@ -7,7 +7,7 @@ import eiti_info
 class TestMain(unittest.TestCase):
 
     def test_check_anns(self):
-        # Check wheter function raises TypeError on 
+        # Check wheter function raises TypeError on
         # inappropriate argument type.
         with self.assertRaises(TypeError):
             eiti_info.check_anns('test', 'test')
