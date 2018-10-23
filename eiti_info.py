@@ -51,7 +51,7 @@ def check_anns(anns, jl_path, sent=True):
 
         file.close()
     else:
-        print("Wrong argument!")
+        raise TypeError("Wrong type of anns argument.")
 
 
 def download_anns(site):
