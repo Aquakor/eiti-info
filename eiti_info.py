@@ -41,6 +41,7 @@ def check_anns(anns, jl_path, sent=True):
                 # Populate the dictionary and save it into file.
                 d['title'] = title
                 d['content'] = ann.p.text
+                d['link'] = ann.p.a.get('href')
                 d['sent'] = sent
                 new_line = json.dumps(d) + "\n"
                 file.write(new_line)
@@ -87,7 +88,7 @@ def send_mail(jl_path):
             break
         if line["sent"] is False:
             yag = yagmail.SMTP()
-            contents = [line["content"]]
+            contents = [line["content"], line['link']]
             yag.send('...', line["title"], contents)
             line["sent"] = True
             print('Mail sent.')
