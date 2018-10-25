@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-import eiti_info
+from eiti_info import eiti_info
 
 
 class TestMain(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestMain(unittest.TestCase):
         with self.assertRaises(TypeError):
             eiti_info.check_anns('test', 'test')
 
-    @patch('eiti_info.requests.get')
+    @patch('requests.get')
     def test_download_anns(self, r_mock):
         # Check wheter function returns "Bad response"
         # on not ok response.
